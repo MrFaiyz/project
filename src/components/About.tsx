@@ -54,7 +54,7 @@ export default function About() {
           opacity: 0 
         },
         {
-          textContent: (i, target) => target.getAttribute('data-value'),
+          textContent: (i: number, target: HTMLElement) => target.getAttribute('data-value'),
           opacity: 1,
           duration: 2,
           ease: "power2.out",
@@ -178,7 +178,7 @@ export default function About() {
             </h2>
 
             <p className="text-xl text-slate-600 leading-relaxed font-inter">
-             We’re revolutionizing content
+             We&apos;re revolutionizing content
               creation by turning your raw footage into
                scroll-stopping videos that get noticed.
                 Our team crafts engaging, high-quality content
