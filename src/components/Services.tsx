@@ -199,7 +199,7 @@ export default function Services() {
 
         {/* Services Grid */}
         <div className="services-grid grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {services.map((service, index) => (
+          {services.map((service) => (
             <motion.div
               key={service.title}
               whileHover={{ y: -10, scale: 1.02 }}

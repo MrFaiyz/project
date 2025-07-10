@@ -14,24 +14,23 @@ export default function LoadingScreen({ isLoading }: LoadingScreenProps) {
   const [isMounted, setIsMounted] = useState(false)
   const [particlePositions, setParticlePositions] = useState<Array<{x: number, y: number}>>([])
 
-  const loadingSteps = [
-    "Initializing...",
-    "Loading assets...",
-    "Preparing 3D models...",
-    "Setting up animations...",
-    "Almost ready...",
-    "Welcome to Zsideo!"
-  ]
-
   useEffect(() => {
     if (!isLoading) return
+
+    const loadingSteps = [
+      "Initializing...",
+      "Loading assets...",
+      "Preparing 3D models...",
+      "Setting up animations...",
+      "Almost ready...",
+      "Welcome to Zsideo!"
+    ]
 
     let currentProgress = 0
     const interval = setInterval(() => {
       setProgress(prev => {
         currentProgress = prev + Math.random() * 12 + 3
-        
-        // Update loading text based on progress
+
         const stepIndex = Math.floor((currentProgress / 100) * loadingSteps.length)
         if (stepIndex < loadingSteps.length) {
           setLoadingText(loadingSteps[stepIndex])
@@ -39,14 +38,13 @@ export default function LoadingScreen({ isLoading }: LoadingScreenProps) {
 
         return Math.min(currentProgress, 100)
       })
-    }, 150) // Slightly slower for smoother progress
+    }, 150)
 
     return () => clearInterval(interval)
-  }, [isLoading, loadingSteps])
+  }, [isLoading])
 
   useEffect(() => {
     setIsMounted(true)
-    // Generate particle positions only on client side
     setParticlePositions([...Array(6)].map(() => ({
       x: Math.random() * 400 - 200,
       y: Math.random() * 400 - 200
@@ -136,17 +134,14 @@ export default function LoadingScreen({ isLoading }: LoadingScreenProps) {
 
             {/* Progress Bar Container */}
             <div className="relative w-full h-2 bg-white/40 rounded-full overflow-hidden backdrop-blur-sm border border-white/30 mb-4">
-              {/* Background Glow */}
               <div className="absolute inset-0 bg-gradient-to-r from-blue-500/20 to-indigo-500/20 rounded-full"></div>
               
-              {/* Progress Bar */}
               <motion.div
                 initial={{ width: 0 }}
                 animate={{ width: `${progress}%` }}
                 transition={{ duration: 0.3, ease: "easeOut" }}
                 className="relative h-full bg-gradient-to-r from-blue-500 to-indigo-500 rounded-full"
               >
-                {/* Shimmer Effect */}
                 <motion.div
                   animate={{ x: [-100, 200] }}
                   transition={{ 

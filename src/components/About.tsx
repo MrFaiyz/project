@@ -188,7 +188,7 @@ export default function About() {
 
             <p className="text-lg text-slate-500 leading-relaxed">
               From TikTok shorts to Instagram reels, YouTube videos to brand content - 
-              Zsideo adapts to every platform's unique requirements and audience preferences.
+              Zsideo adapts to every platform&apos;s unique requirements and audience preferences.
             </p>
           </motion.div>
 

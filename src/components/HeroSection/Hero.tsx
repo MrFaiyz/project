@@ -114,7 +114,7 @@ export default function HeroSection() {
           <Canvas 
             shadows 
             camera={{ position: [0, 1.5, 5], fov: 45 }}
-            onCreated={(state) => {
+            onCreated={(_state) => {
               // Canvas created successfully
               console.log('WebGL context created successfully')
             }}
@@ -194,16 +194,7 @@ export default function HeroSection() {
           animate="visible"
           className="max-w-5xl mx-auto"
         >
-          {/* Badge */}
-          <motion.div
-            variants={itemVariants}
-            className="hero-badge inline-flex items-center gap-2 px-4 py-2 rounded-full glass border border-[#3ac4ec]/30 mb-6"
-          >
-            <Zap className="w-4 h-4 text-blue-600" />
-            <span className="text-sm font-medium text-blue-600 font-jetbrains-mono tracking-wider">
-              AI-POWERED EDITING
-            </span>
-          </motion.div>
+         
 
           {/* Main Title */}
           <motion.h1 
