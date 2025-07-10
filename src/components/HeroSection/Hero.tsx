@@ -114,7 +114,7 @@ export default function HeroSection() {
           <Canvas 
             shadows 
             camera={{ position: [0, 1.5, 5], fov: 45 }}
-            onCreated={(_) => {
+            onCreated={() => {
               // Canvas created successfully
               console.log('WebGL context created successfully')
             }}
