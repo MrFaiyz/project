@@ -1,6 +1,8 @@
 "use client"
 
 import { Canvas } from "@react-three/fiber"
+import { easeInOut } from "framer-motion"
+
 import { motion } from "framer-motion"
 import { useEffect, useRef, useState } from "react"
 import { gsap } from "gsap"
