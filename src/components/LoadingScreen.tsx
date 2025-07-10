@@ -1,7 +1,7 @@
 "use client"
 
 import { motion, AnimatePresence } from "framer-motion"
-import { useEffect, useState, useRef } from "react"
+import { useEffect, useState } from "react"
 import { Sparkles } from "lucide-react"
 
 interface LoadingScreenProps {
@@ -13,7 +13,6 @@ export default function LoadingScreen({ isLoading }: LoadingScreenProps) {
   const [loadingText, setLoadingText] = useState("Initializing...")
   const [isMounted, setIsMounted] = useState(false)
   const [particlePositions, setParticlePositions] = useState<Array<{x: number, y: number}>>([])
-  const mountTime = useRef<number | null>(null)
 
   const loadingSteps = [
     "Initializing...",
@@ -27,34 +26,23 @@ export default function LoadingScreen({ isLoading }: LoadingScreenProps) {
   useEffect(() => {
     if (!isLoading) return
 
-    mountTime.current = Date.now()
+    let currentProgress = 0
     const interval = setInterval(() => {
       setProgress(prev => {
-        const newProgress = prev + Math.random() * 15 + 5
+        currentProgress = prev + Math.random() * 12 + 3
         
         // Update loading text based on progress
-        const stepIndex = Math.floor((newProgress / 100) * loadingSteps.length)
+        const stepIndex = Math.floor((currentProgress / 100) * loadingSteps.length)
         if (stepIndex < loadingSteps.length) {
           setLoadingText(loadingSteps[stepIndex])
         }
 
-        return Math.min(newProgress, 100)
+        return Math.min(currentProgress, 100)
       })
-    }, 100)
+    }, 150) // Slightly slower for smoother progress
 
     return () => clearInterval(interval)
   }, [isLoading, loadingSteps])
-
-  // Ensure loading screen stays at least 2 seconds
-  useEffect(() => {
-    if (!isLoading || progress < 100) return
-
-    const elapsed = Date.now() - (mountTime.current ?? 0)
-    if (elapsed < 2500) {
-      const timeout = setTimeout(() => setProgress(100), 2500 - elapsed)
-      return () => clearTimeout(timeout)
-    }
-  }, [isLoading, progress])
 
   useEffect(() => {
     setIsMounted(true)

@@ -11,10 +11,14 @@ body {
   scroll-behavior: smooth;
   background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 50%, #cbd5e1 100%);
   color: #1e293b;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
 }
 
 * {
   box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
 }
 
 ::selection {
@@ -54,6 +58,7 @@ button {
 /* Smooth transitions */
 body {
   transition: background-color 0.3s ease, color 0.3s ease;
+  will-change: auto;
 }
 
 /* Premium gradient backgrounds */
@@ -127,4 +132,27 @@ body {
 
 .text-reveal.revealed span {
   transform: translateY(0);
+}
+
+/* Performance optimizations */
+.gpu-accelerated {
+  transform: translateZ(0);
+  will-change: transform;
+}
+
+/* WebGL fallback styles */
+.webgl-fallback {
+  background: radial-gradient(circle at center, rgba(59, 130, 246, 0.1) 0%, transparent 70%);
+}
+
+/* Reduce motion for accessibility */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }

@@ -2,11 +2,11 @@
 
 import { Canvas } from "@react-three/fiber"
 import { motion } from "framer-motion"
-import { useEffect, useRef } from "react"
+import { useEffect, useRef, useState } from "react"
 import { gsap } from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
 import Scene3D from "./Scene3D"
-import { Play, ArrowRight, Zap, Video } from "lucide-react"
+import { Play, ArrowRight, Zap, Video, Camera } from "lucide-react"
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger)
@@ -15,43 +15,60 @@ if (typeof window !== "undefined") {
 export default function HeroSection() {
   const heroRef = useRef<HTMLElement>(null)
   const canvasRef = useRef<HTMLDivElement>(null)
+  const [webglSupported, setWebglSupported] = useState(true)
+  const [canvasError, setCanvasError] = useState(false)
 
+  // Check WebGL support
+  useEffect(() => {
+    if (typeof window === "undefined") return
+
+    try {
+      const canvas = document.createElement('canvas')
+      const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl')
+      if (!gl) {
+        setWebglSupported(false)
+      }
+    } catch (error) {
+      console.warn('WebGL not supported:', error)
+      setWebglSupported(false)
+    }
+  }, [])
   useEffect(() => {
     const ctx = gsap.context(() => {
-      // Hero text animations
-      gsap.fromTo(".hero-badge", 
-        { y: 50, opacity: 0 },
-        { y: 0, opacity: 1, duration: 1, delay: 0.8, ease: "power3.out" }
-      )
+      // Delay hero animations to prevent double loading
+      const heroTimeline = gsap.timeline({ delay: 0.5 })
+      
+      heroTimeline
+        .fromTo(".hero-badge", 
+          { y: 50, opacity: 0 },
+          { y: 0, opacity: 1, duration: 1, ease: "power3.out" }
+        )
+        .fromTo(".hero-title", 
+          { y: 100, opacity: 0 },
+          { y: 0, opacity: 1, duration: 1.2, ease: "power3.out" }, "-=0.8"
+        )
+        .fromTo(".hero-subtitle", 
+          { y: 80, opacity: 0 },
+          { y: 0, opacity: 1, duration: 1, ease: "power3.out" }, "-=0.8"
+        )
+        .fromTo(".hero-buttons", 
+          { y: 60, opacity: 0 },
+          { y: 0, opacity: 1, duration: 1, ease: "power3.out" }, "-=0.6"
+        )
+        .fromTo(".hero-stats", 
+          { y: 40, opacity: 0 },
+          { y: 0, opacity: 1, duration: 1, ease: "power3.out" }, "-=0.6"
+        )
 
-      gsap.fromTo(".hero-title", 
-        { y: 100, opacity: 0 },
-        { y: 0, opacity: 1, duration: 1.2, delay: 1, ease: "power3.out" }
-      )
-
-      gsap.fromTo(".hero-subtitle", 
-        { y: 80, opacity: 0 },
-        { y: 0, opacity: 1, duration: 1, delay: 1.2, ease: "power3.out" }
-      )
-
-      gsap.fromTo(".hero-buttons", 
-        { y: 60, opacity: 0 },
-        { y: 0, opacity: 1, duration: 1, delay: 1.4, ease: "power3.out" }
-      )
-
-      gsap.fromTo(".hero-stats", 
-        { y: 40, opacity: 0 },
-        { y: 0, opacity: 1, duration: 1, delay: 1.6, ease: "power3.out" }
-      )
-
-      // Floating animation for stats
+      // Floating animation for stats - start after main animation
       gsap.to(".stat-item", {
         y: -10,
         duration: 2,
         ease: "power2.inOut",
         yoyo: true,
         repeat: -1,
-        stagger: 0.2
+        stagger: 0.2,
+        delay: 2
       })
 
     }, heroRef)
@@ -93,9 +110,80 @@ export default function HeroSection() {
 
       {/* 3D Canvas */}
       <div ref={canvasRef} className="absolute inset-0">
-        <Canvas shadows camera={{ position: [0, 1.5, 5], fov: 45 }}>
-          <Scene3D />
-        </Canvas>
+        {webglSupported && !canvasError ? (
+          <Canvas 
+            shadows 
+            camera={{ position: [0, 1.5, 5], fov: 45 }}
+            onCreated={(state) => {
+              // Canvas created successfully
+              console.log('WebGL context created successfully')
+            }}
+            onError={(error) => {
+              console.warn('Canvas error:', error)
+              setCanvasError(true)
+            }}
+            gl={{
+              antialias: true,
+              alpha: true,
+              powerPreference: "high-performance",
+              failIfMajorPerformanceCaveat: false
+            }}
+          >
+            <Scene3D />
+          </Canvas>
+        ) : (
+          // Fallback for when WebGL is not supported or fails
+          <div className="absolute inset-0 flex items-center justify-center">
+            <motion.div
+              initial={{ scale: 0, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ duration: 1, delay: 0.5 }}
+              className="relative"
+            >
+              {/* Animated fallback icon */}
+              <motion.div
+                animate={{ 
+                  rotateY: [0, 360],
+                  scale: [1, 1.1, 1]
+                }}
+                transition={{ 
+                  rotateY: { duration: 4, repeat: Infinity, ease: "linear" },
+                  scale: { duration: 2, repeat: Infinity, ease: "easeInOut" }
+                }}
+                className="w-32 h-32 rounded-full bg-gradient-to-r from-[#3ac4ec] to-[#ef4444] flex items-center justify-center shadow-2xl"
+              >
+                <Camera className="w-16 h-16 text-white" />
+              </motion.div>
+              
+              {/* Glow effect */}
+              <div className="absolute inset-0 w-32 h-32 bg-gradient-to-r from-[#3ac4ec] to-[#ef4444] rounded-full blur-xl opacity-30 animate-pulse"></div>
+              
+              {/* Floating particles */}
+              {[...Array(6)].map((_, i) => (
+                <motion.div
+                  key={i}
+                  initial={{ 
+                    x: 0, 
+                    y: 0, 
+                    opacity: 0 
+                  }}
+                  animate={{ 
+                    x: [0, Math.cos(i * 60 * Math.PI / 180) * 80, 0],
+                    y: [0, Math.sin(i * 60 * Math.PI / 180) * 80, 0],
+                    opacity: [0, 1, 0]
+                  }}
+                  transition={{ 
+                    duration: 3, 
+                    repeat: Infinity, 
+                    delay: i * 0.5,
+                    ease: "easeInOut"
+                  }}
+                  className="absolute top-1/2 left-1/2 w-2 h-2 bg-blue-500 rounded-full transform -translate-x-1/2 -translate-y-1/2"
+                />
+              ))}
+            </motion.div>
+          </div>
+        )}
       </div>
 
       {/* Hero Content */}
@@ -107,7 +195,15 @@ export default function HeroSection() {
           className="max-w-5xl mx-auto"
         >
           {/* Badge */}
-         
+          <motion.div
+            variants={itemVariants}
+            className="hero-badge inline-flex items-center gap-2 px-4 py-2 rounded-full glass border border-[#3ac4ec]/30 mb-6"
+          >
+            <Zap className="w-4 h-4 text-blue-600" />
+            <span className="text-sm font-medium text-blue-600 font-jetbrains-mono tracking-wider">
+              AI-POWERED EDITING
+            </span>
+          </motion.div>
 
           {/* Main Title */}
           <motion.h1 

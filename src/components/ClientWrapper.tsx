@@ -14,7 +14,7 @@ export default function ClientWrapper({ children }: ClientWrapperProps) {
     // Simulate loading time for assets and 3D models
     const timer = setTimeout(() => {
       setIsLoading(false)
-    }, 1500)
+    }, 3000) // Increased to 3 seconds for better content loading
 
     return () => clearTimeout(timer)
   }, [])
