@@ -221,7 +221,7 @@ export default function About() {
 
           {/* Features Grid */}
           <div className="features-grid grid md:grid-cols-2 gap-6">
-            {features.map((feature, index) => (
+            {features.map((feature) => (
               <motion.div
                 key={feature.title}
                 whileHover={{ y: -5, scale: 1.02 }}

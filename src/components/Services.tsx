@@ -180,12 +180,12 @@ export default function Services() {
         {/* Platform Support */}
         <div className="flex items-center justify-center gap-8 mb-16">
           <span className="text-slate-500 font-jetbrains-mono text-sm">OPTIMIZED FOR</span>
-          {platforms.map((platform, index) => (
+          {platforms.map((platform, platformIndex) => (
             <motion.div
               key={platform.name}
               initial={{ opacity: 0, scale: 0 }}
               whileInView={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
+              transition={{ duration: 0.5, delay: platformIndex * 0.1 }}
               className="platform-icon flex items-center gap-2 px-4 py-2 rounded-full bg-white/60 backdrop-blur-md border border-white/40"
             >
               <platform.icon 

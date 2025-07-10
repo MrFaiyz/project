@@ -1,15 +1,12 @@
 "use client"
 
 import { Canvas } from "@react-three/fiber"
-import { Environment, ContactShadows } from "@react-three/drei"
 import { motion } from "framer-motion"
 import { useEffect, useRef } from "react"
 import { gsap } from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
-import CameraLens from "./CameraLens"
-import TimelineRing from "./TimelineRing"
 import Scene3D from "./Scene3D"
-import { Play, ArrowRight, Zap, Video, Sparkles } from "lucide-react"
+import { Play, ArrowRight, Zap, Video } from "lucide-react"
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger)

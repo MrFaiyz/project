@@ -2,7 +2,7 @@
 
 import { useRef, useEffect } from "react"
 import { useFrame } from "@react-three/fiber"
-import { useSpring, a } from "@react-spring/three"
+import { a } from "@react-spring/three"
 import { gsap } from "gsap"
 import * as THREE from "three"
 

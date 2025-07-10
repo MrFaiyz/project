@@ -1,5 +1,6 @@
 "use client"
 
+import Image from "next/image"
 import { useEffect, useRef, useState } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { gsap } from "gsap"
@@ -167,7 +168,7 @@ export default function Testimonials() {
 
           <p className="text-xl text-slate-600 max-w-3xl mx-auto leading-relaxed">
             Join thousands of content creators, marketers, and brands who have transformed 
-            their video content with Zsideo's platform.
+            their video content with Zsideo&apos;s platform.
           </p>
         </div>
 
@@ -209,9 +210,11 @@ export default function Testimonials() {
                 {/* Avatar & Info */}
                 <div className="flex-shrink-0">
                   <div className="relative">
-                    <img
+                    <Image
                       src={testimonials[currentTestimonial].image}
                       alt={testimonials[currentTestimonial].name}
+                      width={80}
+                      height={80}
                       className="w-20 h-20 rounded-2xl object-cover"
                     />
                     <div className="absolute -bottom-2 -right-2 w-8 h-8 bg-gradient-to-r from-[#3ac4ec] to-[#ef4444] rounded-full flex items-center justify-center">
@@ -228,7 +231,7 @@ export default function Testimonials() {
                   <Quote className="w-8 h-8 text-blue-600 mb-4" />
                   
                   <blockquote className="text-xl md:text-2xl text-slate-800 leading-relaxed mb-6 font-inter">
-                    "{testimonials[currentTestimonial].content}"
+                    &ldquo;{testimonials[currentTestimonial].content}&rdquo;
                   </blockquote>
 
                   {/* Rating */}
